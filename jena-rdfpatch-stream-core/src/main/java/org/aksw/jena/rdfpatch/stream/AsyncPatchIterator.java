@@ -24,20 +24,49 @@ import org.apache.jena.rdfpatch.items.TxnCommit;
 import org.apache.jena.rdfpatch.text.RDFPatchReaderText;
 import org.apache.jena.riot.system.streammgr.StreamManager;
 
+/**
+ * Async iterator that parses RDF patch files and provides change items via a background thread.
+ */
 public class AsyncPatchIterator extends AbstractIterator<ChangeItem>
     implements IteratorCloseable<ChangeItem>
 {
+    /**
+     * Creates an AsyncPatchIterator from a filename or URI.
+     *
+     * @param filenameOrURI The filename or URI of the patch file
+     * @return An iterator over change items
+     */
     public static IteratorCloseable<ChangeItem> of(String filenameOrURI) {
         InputStream in = StreamManager.get().open(filenameOrURI);
         return new AsyncPatchIterator(in);
     }
 
+    /**
+     * Queue for passing items from parser thread to consumer.
+     */
     private final BlockingQueue<Object> queue = new ArrayBlockingQueue<>(1024);
+    /**
+     * Poison pill to signal end of data.
+     */
     private final Object POISON = new Object();
+    /**
+     * Flag indicating if the iterator is closed.
+     */
     private AtomicBoolean isClosed = new AtomicBoolean();
+    /**
+     * Background parser thread.
+     */
     private final Thread parserThread;
+    /**
+     * Next item to return from computeNext().
+     */
     private ChangeItem nextStep = null;
 
+    /**
+     * Creates a new AsyncPatchIterator that parses the given input stream.
+     *
+     * @param in The input stream to parse
+     */
     public AsyncPatchIterator(InputStream in) {
         Objects.requireNonNull(in);
         this.parserThread = new Thread(() -> {
@@ -147,11 +176,21 @@ public class AsyncPatchIterator extends AbstractIterator<ChangeItem>
         }
     }
 
+    /**
+     * Exception thrown when the iterator is closed.
+     */
     public static class ClosedException extends RuntimeException {
+        private ClosedException() {
+        }
         private static final long serialVersionUID = 1L;
     }
 
+    /**
+     * Exception wrapping a parser error.
+     */
     public static class ItemException extends RuntimeException {
+        private ItemException() {
+        }
         private static final long serialVersionUID = 1L;
         ItemException(Throwable cause) { super(cause); }
     }
