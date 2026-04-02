@@ -9,8 +9,8 @@ Invocation with native Java compression decoding (via commons-compress)
 
 ```bash
 rdfpatch-stream apply \
-  lbzcat wikidata-20250723-truthy-BETA.sorted.nt.bz2
-  lbzcat wikidata-20250723-to-20250918-truthy-BETA.sorted.rdfp.bz2
+  wikidata-20250723-truthy-BETA.sorted.nt.bz2
+  wikidata-20250723-to-20250918-truthy-BETA.sorted.rdfp.bz2
 ```
 
 Compression decoding via process substitution:
