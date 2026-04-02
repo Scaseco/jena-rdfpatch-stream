@@ -9,6 +9,9 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
+import org.aksw.jena.rdfpatch.stream.PatchIter;
+import org.aksw.jena.rdfpatch.stream.PatchRecord;
+import org.aksw.jena.rdfpatch.stream.QuadUtils;
 import org.apache.jena.atlas.iterator.Iter;
 import org.apache.jena.atlas.iterator.IteratorCloseable;
 import org.apache.jena.riot.out.NodeFmtLib;

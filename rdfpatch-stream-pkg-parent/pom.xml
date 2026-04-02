@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>rdfpatch-stream-pkg-parent</artifactId>
+	<name>RDFPatch Stream - Package Parent</name>
+	<description>Package parent module for RDFPatch Stream</description>
+	<packaging>pom</packaging>
+
+<parent>
+		<groupId>org.aksw.jena.rdfpatch.stream</groupId>
+		<artifactId>rdfpatch-stream-parent</artifactId>
+		<version>0.7.1-SNAPSHOT</version>
+	</parent>
+	<modules>
+		<module>rdfpatch-stream-pkg-uberjar-cli</module>
+		<module>rdfpatch-stream-pkg-deb-cli</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>injected-central-publishing</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

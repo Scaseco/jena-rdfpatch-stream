@@ -4,16 +4,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.aksw.jena.rdfpatch.stream</groupId>
-	<artifactId>jena-rdfpatch-stream-parent</artifactId>
-	<version>0.7.1-SNAPSHOT</version>
+		<artifactId>rdfpatch-stream-parent</artifactId>
+		<version>0.7.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Jena RDFPatch Stream - Parent</name>
-	<description>RDF Patch Stream Processing for Apache Jena</description>
+	<name>RDFPatch Stream - Parent</name>
+	<description>RDFPatch Stream - Parent POM</description>
 
-	<url>https://github.com/Scaseco/jena-rdfpatch-stream</url>
+	<url>https://github.com/Scaseco/rdfpatch-stream</url>
 	<issueManagement>
-		<url>https://github.com/Scaseco/jena-rdfpatch-stream/issues</url>
+		<url>https://github.com/Scaseco/rdfpatch-stream/issues</url>
 		<system>GitHub</system>
 	</issueManagement>
 	<licenses>
@@ -24,10 +24,10 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>https://github.com/Scaseco/jena-rdfpatch-stream</url>
-		<connection>scm:git:git://github.com/Scaseco/jena-rdfpatch-stream.git</connection>
+		<url>https://github.com/Scaseco/rdfpatch-stream</url>
+		<connection>scm:git:git://github.com/Scaseco/rdfpatch-stream.git</connection>
 		<developerConnection>
-			scm:git:git@github.com:Scaseco/jena-rdfpatch-stream.git</developerConnection>
+			scm:git:git@github.com:Scaseco/rdfpatch-stream.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 	<developers>
@@ -39,12 +39,19 @@
 		</developer>
 	</developers>
 	<modules>
-		<module>jena-rdfpatch-stream-core</module>
+		<module>rdfpatch-stream-core</module>
+		<module>rdfpatch-stream-cmds</module>
+		<module>rdfpatch-stream-cli</module>
+		<module>rdfpatch-stream-bom</module>
+		<module>rdfpatch-stream-pkg-parent</module>
 	</modules>
 	<properties>
 		<jena.version>6.0.0</jena.version>
 		<junit.version>6.1.0-M1</junit.version>
 		<guava.version>33.4.0-jre</guava.version>
+		<picocli.version>4.7.7</picocli.version>
+
+		<jdeb.version>1.14</jdeb.version>
 
 		<maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
 		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
@@ -99,15 +106,9 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.jena</groupId>
-				<artifactId>jena-fuseki-main</artifactId>
-				<version>${jena.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.jena</groupId>
-				<artifactId>jena-fuseki-server</artifactId>
-				<version>${jena.version}</version>
+				<groupId>info.picocli</groupId>
+				<artifactId>picocli</artifactId>
+				<version>${picocli.version}</version>
 			</dependency>
 
 			<dependency>
@@ -120,13 +121,19 @@
 
 			<dependency>
 				<groupId>org.aksw.jena.rdfpatch.stream</groupId>
-				<artifactId>jena-rdfpatch-stream-arq</artifactId>
+				<artifactId>rdfpatch-stream-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.aksw.jena.rdfpatch.stream</groupId>
-				<artifactId>jena-rdfpatch-stream-fuseki-mod</artifactId>
+				<artifactId>rdfpatch-stream-cmds</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.aksw.jena.rdfpatch.stream</groupId>
+				<artifactId>rdfpatch-stream-cli</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -326,6 +333,23 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.vafer</groupId>
+					<artifactId>jdeb</artifactId>
+					<version>${jdeb.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>${maven-gpg-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.central</groupId>
+					<artifactId>central-publishing-maven-plugin</artifactId>
+					<version>${central-publishing-maven-plugin.version}</version>
+				</plugin>
+
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -404,7 +428,6 @@
 					<plugin>
 						<groupId>org.sonatype.central</groupId>
 						<artifactId>central-publishing-maven-plugin</artifactId>
-						<version>${central-publishing-maven-plugin.version}</version>
 						<extensions>true</extensions>
 						<configuration>
 							<publishingServerId>central</publishingServerId>

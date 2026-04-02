@@ -4,36 +4,29 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>jena-rdfpatch-stream-core</artifactId>
-	<name>Jena RDFPatch Stream - Core</name>
-	<description>Core classes and hooks into ARQ's QueryEngineRegistry and
-		UpdateEngineRegistry</description>
+	<artifactId>rdfpatch-stream-cmds</artifactId>
+	<name>RDFPatch Stream - Commands</name>
+	<description>RDFPatchStream Commands</description>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.aksw.jena.rdfpatch.stream</groupId>
-		<artifactId>jena-rdfpatch-stream-parent</artifactId>
+		<artifactId>rdfpatch-stream-parent</artifactId>
 		<version>0.7.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-arq</artifactId>
+			<groupId>org.aksw.jena.rdfpatch.stream</groupId>
+			<artifactId>rdfpatch-stream-core</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-rdfpatch</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
 		</dependency>
 
 		<!-- Unit Testing -->
-
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
