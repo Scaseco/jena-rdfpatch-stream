@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
@@ -26,6 +27,7 @@ public class PatchApplyIterator<T>
     implements IteratorCloseable<T> {
 
     private final Comparator<? super T> comparator;
+    private final Function<?super T, String> recordToString;
     private final PeekingIterator<T> baseIter;
     private final List<PeekingIterator<PatchRecord<T>>> patchIters;
 
@@ -43,8 +45,10 @@ public class PatchApplyIterator<T>
      */
     public PatchApplyIterator(Iterator<T> base,
                               List<? extends Iterator<PatchRecord<T>>> patches,
-                              Comparator<? super T> comparator) {
+                              Comparator<? super T> comparator,
+                              Function<?super T, String> recordToString) {
         this.comparator = Objects.requireNonNull(comparator);
+        this.recordToString = Objects.requireNonNull(recordToString);
         this.baseIter = Iterators.peekingIterator(Objects.requireNonNull(base));
 
         this.patches = patches;
@@ -104,7 +108,9 @@ public class PatchApplyIterator<T>
                         T old = entry.value();
                         T n = next.value();
                         if (comparator.compare(n, old) <= 0) {
-                            throw new RuntimeException("Order violation: " + old + " followed by " + n);
+                            String oldStr = recordToString.apply(old);
+                            String newStr = recordToString.apply(n);
+                            throw new RuntimeException("Order violation: " + oldStr + " followed by " + newStr);
                         }
                     }
 
@@ -124,7 +130,9 @@ public class PatchApplyIterator<T>
                     T n = baseIter.peek();
                     // new item must be strictly greater than the old one
                     if (comparator.compare(n, old) <= 0) {
-                        throw new RuntimeException("Order violation: " + old + " followed by " + n);
+                        String oldStr = recordToString.apply(old);
+                        String newStr = recordToString.apply(n);
+                        throw new RuntimeException("Order violation: " + oldStr + " followed by " + newStr);
                     }
                 }
             }
@@ -133,7 +141,7 @@ public class PatchApplyIterator<T>
                 return candidate;
             }
 
-            // If we suppressed it, continue to find the next valid triple
+            // If we suppressed it, continue to find the next valid record
         }
     }
 

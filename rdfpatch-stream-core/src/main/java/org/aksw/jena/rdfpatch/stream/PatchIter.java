@@ -1,7 +1,9 @@
 package org.aksw.jena.rdfpatch.stream;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -35,13 +37,14 @@ public class PatchIter {
 //        .thenComparing(Quad::getGraph, PatchIter::cmpGraph);
 
     /**
-     * Comparator for quads based on their canonical string representation.
+     * Comparator for quads based on their canonical byte representation.
      */
     public static final Comparator<Quad> COMPARATOR_QUAD = Comparator
         .comparing(q -> {
             String str = NodeFmtLib.strNQ(QuadUtils.canonicalize(q));
-            return str;
-        }, String::compareTo);
+            byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+            return bytes;
+        }, Arrays::compare);
 
     /**
      * Compares two graph nodes, treating null and default graph as equal.
@@ -95,7 +98,7 @@ public class PatchIter {
         return applyPatch(baseFilenameOrUri, patches);
     }
 
-      /**
+    /**
      * Applies a list of patches to a base RDF file.
      *
      * @param baseFilenameOrUri The filename or URI of the base RDF file
@@ -113,7 +116,7 @@ public class PatchIter {
         return applyPatch(baseIt, patchIts);
     }
 
-     /**
+    /**
      * Applies patch records to a base iterator of quads.
      *
      * @param baseIt The base iterator of quads
@@ -121,7 +124,7 @@ public class PatchIter {
      * @return An iterator over the patched quads
      */
     public static IteratorCloseable<Quad> applyPatch(Iterator<Quad> baseIt, List<? extends Iterator<PatchRecord<Quad>>> patchIts) {
-        return new PatchApplyIterator<>(baseIt, patchIts, COMPARATOR_QUAD);
+        return new PatchApplyIterator<>(baseIt, patchIts, COMPARATOR_QUAD, Objects::toString);
     }
 
      /**
