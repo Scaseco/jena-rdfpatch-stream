@@ -1,4 +1,4 @@
-# Jena RDFPatch Stream
+# RDFPatch Stream
 
 Experimental byte-level patch application based on sorted canonical n-quads and rdfpatch files.
 
