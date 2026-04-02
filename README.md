@@ -2,6 +2,9 @@
 
 Experimental byte-level patch application based on sorted canonical n-quads and rdfpatch files.
 
+Status: Working but just single threaded and comparatively slow:
+`pv` reports a throughput of ~20MB/s with SSD and 12th Gen Intel(R) Core(TM) i9-12900HK.
+
 Invocation with native Java compression decoding (via commons-compress)
 
 ```bash
@@ -20,6 +23,8 @@ rdfpatch-stream apply \
 
 
 ## Patch creation
+
+Sorting wikidata truthy (40GB bz2 compressed, ~1TB plain nq) takes ~2 hours or less on sufficiently modern hardware.
 
 Step 1: Sort nquads using `sort -u`. Adjust memory, decoding and re-encoding as needed.
 
