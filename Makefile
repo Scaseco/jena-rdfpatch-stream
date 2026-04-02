@@ -22,10 +22,10 @@ uberjar: ## Create the self-contained RDFPatch Stream JAR
 	printf '\nCreated package:\n\n%s\n\n' "$$file"
 
 deb-rebuild: ## Rebuild the deb package (minimal build of only required modules)
-	$(MCIS) $(POM) -Pdeb -am -pl :jena-rdfpatch-stream-pkg-deb-cli $(ARGS)
+	$(MCIS) $(POM) -Pdeb -am -pl :rdfpatch-stream-pkg-deb-cli $(ARGS)
 
 deb-reinstall: ## Reinstall deb (requires prior build)
-	@p1=`find jena-rdfpatch-stream-pkg-parent/jena-rdfpatch-stream-pkg-deb-cli/target | grep '\.deb$$'`
+	@p1=`find rdfpatch-stream-pkg-parent/rdfpatch-stream-pkg-deb-cli/target | grep '\.deb$$'`
 	sudo dpkg -i "$$p1"
 
 deb-rere: deb-rebuild deb-reinstall ## Rebuild and reinstall deb package
