@@ -29,6 +29,8 @@ public class PatchApplyIterator<T>
     private final PeekingIterator<T> baseIter;
     private final List<PeekingIterator<PatchRecord<T>>> patchIters;
 
+    private final boolean validateOrder = true;
+
     // For closing.
     private final List<? extends Iterator<PatchRecord<T>>> patches;
 
@@ -95,6 +97,17 @@ public class PatchApplyIterator<T>
                 if (patch.hasNext() && comparator.compare(patch.peek().value(), candidate) == 0) {
                     PatchRecord<T> entry = patch.next(); // consume it
 
+                    if (validateOrder && patch.hasNext()) {
+                        PatchRecord<T> next = patch.peek(); // consume it
+
+                        // new item must be strictly greater than the old one
+                        T old = entry.value();
+                        T n = next.value();
+                        if (comparator.compare(n, old) <= 0) {
+                            throw new RuntimeException("Order violation: " + old + " followed by " + n);
+                        }
+                    }
+
                     if (entry.type() == Type.DELETED) {
                         shouldEmit = false;
                     } else if (entry.type() == Type.ADDED) {
@@ -105,7 +118,15 @@ public class PatchApplyIterator<T>
 
             // Advance base if it matched the candidate
             if (baseIter.hasNext() && comparator.compare(baseIter.peek(), candidate) == 0) {
-                baseIter.next(); // consume base entry
+                T old = baseIter.next(); // consume base entry
+
+                if (validateOrder && baseIter.hasNext()) {
+                    T n = baseIter.peek();
+                    // new item must be strictly greater than the old one
+                    if (comparator.compare(n, old) <= 0) {
+                        throw new RuntimeException("Order violation: " + old + " followed by " + n);
+                    }
+                }
             }
 
             if (shouldEmit) {
