@@ -28,7 +28,7 @@ deb-reinstall: ## Reinstall deb (requires prior build)
 	@p1=`find rdfpatch-stream-pkg-parent/rdfpatch-stream-pkg-deb-cli/target | grep '\.deb$$'`
 	sudo dpkg -i "$$p1"
 
-deb-rere: deb-rebuild deb-reinstall ## Rebuild and reinstall deb package
+deb-rere: deb-rebuild deb-reinstall ## Rebuild and reinstall deb package; disable signing with -ARGS=-Djdeb.signPackage=false
 
 #release-github: SHELL:=/bin/bash
 #release-github: ## Create files for Github upload
