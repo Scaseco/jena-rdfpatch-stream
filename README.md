@@ -5,7 +5,7 @@ Experimental byte-level patch application based on sorted canonical n-quads and 
 Status: Working but just single threaded and comparatively slow:
 `pv` reports a throughput of ~20MB/s with SSD and 12th Gen Intel(R) Core(TM) i9-12900HK.
 
-* 💡 For patching sorted N-Quad files use [Scaseco/rdfpatch-nq-posix](https://github.com/Scaseco/rdfpatch-nq-posix) which is ~20x faster (~400MB/s).
+* 💡 For patching sorted N-Quad files use [Scaseco/rdfpatch-nq-posix](https://github.com/Scaseco/rdfpatch-nq-posix) with ~20x the throughput (~400MB/s).
 
 Invocation with native Java compression decoding (via commons-compress)
 
